@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_11ouecb" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.52.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.9.0">
+  <bpmn:process id="b2c_chq_namechange_validate_person_relationship" name="Validate Person Relationship" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_0ui8lyf</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:exclusiveGateway id="Gateway_1ercao9" name="Name change reason marriage?" default="Flow_1j8lpdj">
+      <bpmn:incoming>Flow_0u0fmxv</bpmn:incoming>
+      <bpmn:outgoing>Flow_0oxcxmt</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1j8lpdj</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0ui8lyf" sourceRef="StartEvent_1" targetRef="Activity_ValidateNameChangeReason" />
+    <bpmn:sequenceFlow id="Flow_0u0fmxv" sourceRef="Activity_ValidateNameChangeReason" targetRef="Gateway_1ercao9" />
+    <bpmn:serviceTask id="Activity_ValidateNameChangeReason" name="Validate Name Change Reason">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="validateNameChangeReason" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0ui8lyf</bpmn:incoming>
+      <bpmn:outgoing>Flow_0u0fmxv</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0oxcxmt" name="Yes" sourceRef="Gateway_1ercao9" targetRef="Activity_GetRelatedContacts">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=isNamechangeReasonMarriage</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:endEvent id="Event_0sgezvh" name="Reason not relevant for partner relationship">
+      <bpmn:incoming>Flow_1j8lpdj</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1j8lpdj" name="No" sourceRef="Gateway_1ercao9" targetRef="Event_0sgezvh" />
+    <bpmn:serviceTask id="Activity_GetRelatedContacts" name="Get Related Contacts" zeebe:modelerTemplate="io.camunda.connectors.HttpJson.v2" zeebe:modelerTemplateVersion="13" zeebe:modelerTemplateIcon="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHZpZXdCb3g9IjAgMCAxOCAxOCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE3LjAzMzUgOC45OTk5N0MxNy4wMzM1IDEzLjQ0NzUgMTMuNDI4MSAxNy4wNTI5IDguOTgwNjUgMTcuMDUyOUM0LjUzMzE2IDE3LjA1MjkgMC45Mjc3NjUgMTMuNDQ3NSAwLjkyNzc2NSA4Ljk5OTk3QzAuOTI3NzY1IDQuNTUyNDggNC41MzMxNiAwLjk0NzA4MyA4Ljk4MDY1IDAuOTQ3MDgzQzEzLjQyODEgMC45NDcwODMgMTcuMDMzNSA0LjU1MjQ4IDE3LjAzMzUgOC45OTk5N1oiIGZpbGw9IiM1MDU1NjIiLz4KPHBhdGggZD0iTTQuOTMxMjYgMTQuMTU3MUw2Ljc4MTA2IDMuNzE0NzFIMTAuMTM3NUMxMS4xOTE3IDMuNzE0NzEgMTEuOTgyNCAzLjk4MzIzIDEyLjUwOTUgNC41MjAyN0MxMy4wNDY1IDUuMDQ3MzYgMTMuMzE1IDUuNzMzNTggMTMuMzE1IDYuNTc4OTJDMTMuMzE1IDcuNDQ0MTQgMTMuMDcxNCA4LjE1NTIyIDEyLjU4NDEgOC43MTIxNUMxMi4xMDY3IDkuMjU5MTMgMTEuNDU1MyA5LjYzNzA1IDEwLjYyOTggOS44NDU5TDEyLjA2MTkgMTQuMTU3MUgxMC4zMzE1TDkuMDMzNjQgMTAuMDI0OUg3LjI0MzUxTDYuNTEyNTQgMTQuMTU3MUg0LjkzMTI2Wk03LjQ5NzExIDguNTkyODFIOS4yNDI0OEM5Ljk5ODMyIDguNTkyODEgMTAuNTkwMSA4LjQyMzc0IDExLjAxNzcgOC4wODU2MUMxMS40NTUzIDcuNzM3NTMgMTEuNjc0MSA3LjI2NTEzIDExLjY3NDEgNi42Njg0MkMxMS42NzQxIDYuMTkxMDYgMTEuNTI0OSA1LjgxODExIDExLjIyNjUgNS41NDk1OUMxMC45MjgyIDUuMjcxMTMgMTAuNDU1OCA1LjEzMTkgOS44MDkzNiA1LjEzMTlIOC4xMDg3NEw3LjQ5NzExIDguNTkyODFaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="io.camunda:http-json:1" retries="3" />
+        <zeebe:ioMapping>
+          <zeebe:input source="noAuth" target="authentication.type" />
+          <zeebe:input source="GET" target="method" />
+          <zeebe:input source="=relatedContactsURL" target="url" />
+          <zeebe:input source="=false" target="storeResponse" />
+          <zeebe:input source="=false" target="followRedirects" />
+          <zeebe:input source="=20" target="connectionTimeoutInSeconds" />
+          <zeebe:input source="=20" target="readTimeoutInSeconds" />
+        </zeebe:ioMapping>
+        <zeebe:taskHeaders>
+          <zeebe:header key="elementTemplateVersion" value="13" />
+          <zeebe:header key="elementTemplateId" value="io.camunda.connectors.HttpJson.v2" />
+          <zeebe:header key="resultExpression" value="={&#10;  relatedContacts: response.body&#10;}" />
+          <zeebe:header key="retryBackoff" value="PT0S" />
+        </zeebe:taskHeaders>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0oxcxmt</bpmn:incoming>
+      <bpmn:outgoing>Flow_02xj62g</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_054rvnc" name="Any related contacts?" default="Flow_0yx2jl9">
+      <bpmn:incoming>Flow_02xj62g</bpmn:incoming>
+      <bpmn:outgoing>Flow_0vfhfs8</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0yx2jl9</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_02xj62g" sourceRef="Activity_GetRelatedContacts" targetRef="Gateway_054rvnc" />
+    <bpmn:sequenceFlow id="Flow_0vfhfs8" name="Yes" sourceRef="Gateway_054rvnc" targetRef="Activity_FilterRelatedContacts">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=count(relatedContacts) &gt; 0</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:endEvent id="Event_1gevjsp" name="No related contact found">
+      <bpmn:incoming>Flow_0yx2jl9</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0yx2jl9" name="No" sourceRef="Gateway_054rvnc" targetRef="Event_1gevjsp" />
+    <bpmn:scriptTask id="Activity_FilterRelatedContacts" name="Filter Related Contacts">
+      <bpmn:extensionElements>
+        <zeebe:script expression="=[]" resultVariable="relatedContacts" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0vfhfs8</bpmn:incoming>
+      <bpmn:outgoing>Flow_1etdve5</bpmn:outgoing>
+    </bpmn:scriptTask>
+    <bpmn:exclusiveGateway id="Gateway_022zw16" name="COOWNER exists?" default="Flow_164relt">
+      <bpmn:incoming>Flow_1etdve5</bpmn:incoming>
+      <bpmn:outgoing>Flow_164relt</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1d9jjw0</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1etdve5" sourceRef="Activity_FilterRelatedContacts" targetRef="Gateway_022zw16" />
+    <bpmn:endEvent id="Event_16d1an7" name="No coowner found">
+      <bpmn:incoming>Flow_164relt</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_164relt" name="No" sourceRef="Gateway_022zw16" targetRef="Event_16d1an7" />
+    <bpmn:sequenceFlow id="Flow_1d9jjw0" name="Yes" sourceRef="Gateway_022zw16" targetRef="Activity_ValidateRequiredMaritalStatus">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=is defined(coowner)</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:exclusiveGateway id="Gateway_1rwg9cc" name="COOWNER matches?" default="Flow_0vik6le">
+      <bpmn:incoming>Flow_11rt13i</bpmn:incoming>
+      <bpmn:outgoing>Flow_0vik6le</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1h0cqij</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_11rt13i" sourceRef="Activity_ValidateRequiredMaritalStatus" targetRef="Gateway_1rwg9cc" />
+    <bpmn:endEvent id="Event_09tca4r" name="No coowner partner exists">
+      <bpmn:incoming>Flow_0vik6le</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0vik6le" name="No" sourceRef="Gateway_1rwg9cc" targetRef="Event_09tca4r" />
+    <bpmn:sequenceFlow id="Flow_1h0cqij" sourceRef="Gateway_1rwg9cc" targetRef="Activity_ConvertToContactId">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=coownerMatches</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0ja2s0n" sourceRef="Activity_ConvertToContactId" targetRef="Activity_GetMaritalStatusOfTheCustomer" />
+    <bpmn:sequenceFlow id="Flow_1thhi4e" sourceRef="Activity_GetMaritalStatusOfTheCustomer" targetRef="Activity_ValidateExistingMaritalStatus" />
+    <bpmn:serviceTask id="Activity_GetMaritalStatusOfTheCustomer" name="Get Marital Status Of The Customer" zeebe:modelerTemplate="io.camunda.connectors.HttpJson.v2" zeebe:modelerTemplateVersion="13" zeebe:modelerTemplateIcon="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHZpZXdCb3g9IjAgMCAxOCAxOCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE3LjAzMzUgOC45OTk5N0MxNy4wMzM1IDEzLjQ0NzUgMTMuNDI4MSAxNy4wNTI5IDguOTgwNjUgMTcuMDUyOUM0LjUzMzE2IDE3LjA1MjkgMC45Mjc3NjUgMTMuNDQ3NSAwLjkyNzc2NSA4Ljk5OTk3QzAuOTI3NzY1IDQuNTUyNDggNC41MzMxNiAwLjk0NzA4MyA4Ljk4MDY1IDAuOTQ3MDgzQzEzLjQyODEgMC45NDcwODMgMTcuMDMzNSA0LjU1MjQ4IDE3LjAzMzUgOC45OTk5N1oiIGZpbGw9IiM1MDU1NjIiLz4KPHBhdGggZD0iTTQuOTMxMjYgMTQuMTU3MUw2Ljc4MTA2IDMuNzE0NzFIMTAuMTM3NUMxMS4xOTE3IDMuNzE0NzEgMTEuOTgyNCAzLjk4MzIzIDEyLjUwOTUgNC41MjAyN0MxMy4wNDY1IDUuMDQ3MzYgMTMuMzE1IDUuNzMzNTggMTMuMzE1IDYuNTc4OTJDMTMuMzE1IDcuNDQ0MTQgMTMuMDcxNCA4LjE1NTIyIDEyLjU4NDEgOC43MTIxNUMxMi4xMDY3IDkuMjU5MTMgMTEuNDU1MyA5LjYzNzA1IDEwLjYyOTggOS44NDU5TDEyLjA2MTkgMTQuMTU3MUgxMC4zMzE1TDkuMDMzNjQgMTAuMDI0OUg3LjI0MzUxTDYuNTEyNTQgMTQuMTU3MUg0LjkzMTI2Wk03LjQ5NzExIDguNTkyODFIOS4yNDI0OEM5Ljk5ODMyIDguNTkyODEgMTAuNTkwMSA4LjQyMzc0IDExLjAxNzcgOC4wODU2MUMxMS40NTUzIDcuNzM3NTMgMTEuNjc0MSA3LjI2NTEzIDExLjY3NDEgNi42Njg0MkMxMS42NzQxIDYuMTkxMDYgMTEuNTI0OSA1LjgxODExIDExLjIyNjUgNS41NDk1OUMxMC45MjgyIDUuMjcxMTMgMTAuNDU1OCA1LjEzMTkgOS44MDkzNiA1LjEzMTlIOC4xMDg3NEw3LjQ5NzExIDguNTkyODFaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="io.camunda:http-json:1" retries="3" />
+        <zeebe:ioMapping>
+          <zeebe:input source="noAuth" target="authentication.type" />
+          <zeebe:input source="GET" target="method" />
+          <zeebe:input source="=maritalStatusURL" target="url" />
+          <zeebe:input source="=false" target="storeResponse" />
+          <zeebe:input source="=false" target="followRedirects" />
+          <zeebe:input source="=20" target="connectionTimeoutInSeconds" />
+          <zeebe:input source="=20" target="readTimeoutInSeconds" />
+        </zeebe:ioMapping>
+        <zeebe:taskHeaders>
+          <zeebe:header key="elementTemplateVersion" value="13" />
+          <zeebe:header key="elementTemplateId" value="io.camunda.connectors.HttpJson.v2" />
+          <zeebe:header key="resultExpression" value="={&#10;  myResponseBody: response.body&#10;  // Use FEEL to extract values, e.g.,:&#10;  // myUserId: response.body.post.userId&#10;}" />
+          <zeebe:header key="retryBackoff" value="PT0S" />
+        </zeebe:taskHeaders>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0ja2s0n</bpmn:incoming>
+      <bpmn:outgoing>Flow_1thhi4e</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_1cfrnhw" name="Matching relationship found?" default="Flow_0ywzxxu">
+      <bpmn:incoming>Flow_0kt78f6</bpmn:incoming>
+      <bpmn:outgoing>Flow_16oht8z</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0ywzxxu</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0kt78f6" sourceRef="Activity_ValidateExistingMaritalStatus" targetRef="Gateway_1cfrnhw" />
+    <bpmn:sequenceFlow id="Flow_16oht8z" name="Yes" sourceRef="Gateway_1cfrnhw" targetRef="Activity_0glmmam">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=matchingRelationshipFound</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:exclusiveGateway id="Gateway_07a6g6b">
+      <bpmn:incoming>Flow_1bfcasy</bpmn:incoming>
+      <bpmn:incoming>Flow_0ywzxxu</bpmn:incoming>
+      <bpmn:outgoing>Flow_1c26d9g</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1bfcasy" sourceRef="Activity_0glmmam" targetRef="Gateway_07a6g6b" />
+    <bpmn:endEvent id="Event_169qq2n" name="Marriage successfully completed">
+      <bpmn:incoming>Flow_1c26d9g</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1c26d9g" sourceRef="Gateway_07a6g6b" targetRef="Event_169qq2n" />
+    <bpmn:sequenceFlow id="Flow_0ywzxxu" name="No" sourceRef="Gateway_1cfrnhw" targetRef="Gateway_07a6g6b" />
+    <bpmn:serviceTask id="Activity_0glmmam" name="Update Marital Status" zeebe:modelerTemplate="io.camunda.connectors.HttpJson.v2" zeebe:modelerTemplateVersion="13" zeebe:modelerTemplateIcon="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHZpZXdCb3g9IjAgMCAxOCAxOCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE3LjAzMzUgOC45OTk5N0MxNy4wMzM1IDEzLjQ0NzUgMTMuNDI4MSAxNy4wNTI5IDguOTgwNjUgMTcuMDUyOUM0LjUzMzE2IDE3LjA1MjkgMC45Mjc3NjUgMTMuNDQ3NSAwLjkyNzc2NSA4Ljk5OTk3QzAuOTI3NzY1IDQuNTUyNDggNC41MzMxNiAwLjk0NzA4MyA4Ljk4MDY1IDAuOTQ3MDgzQzEzLjQyODEgMC45NDcwODMgMTcuMDMzNSA0LjU1MjQ4IDE3LjAzMzUgOC45OTk5N1oiIGZpbGw9IiM1MDU1NjIiLz4KPHBhdGggZD0iTTQuOTMxMjYgMTQuMTU3MUw2Ljc4MTA2IDMuNzE0NzFIMTAuMTM3NUMxMS4xOTE3IDMuNzE0NzEgMTEuOTgyNCAzLjk4MzIzIDEyLjUwOTUgNC41MjAyN0MxMy4wNDY1IDUuMDQ3MzYgMTMuMzE1IDUuNzMzNTggMTMuMzE1IDYuNTc4OTJDMTMuMzE1IDcuNDQ0MTQgMTMuMDcxNCA4LjE1NTIyIDEyLjU4NDEgOC43MTIxNUMxMi4xMDY3IDkuMjU5MTMgMTEuNDU1MyA5LjYzNzA1IDEwLjYyOTggOS44NDU5TDEyLjA2MTkgMTQuMTU3MUgxMC4zMzE1TDkuMDMzNjQgMTAuMDI0OUg3LjI0MzUxTDYuNTEyNTQgMTQuMTU3MUg0LjkzMTI2Wk03LjQ5NzExIDguNTkyODFIOS4yNDI0OEM5Ljk5ODMyIDguNTkyODEgMTAuNTkwMSA4LjQyMzc0IDExLjAxNzcgOC4wODU2MUMxMS40NTUzIDcuNzM3NTMgMTEuNjc0MSA3LjI2NTEzIDExLjY3NDEgNi42Njg0MkMxMS42NzQxIDYuMTkxMDYgMTEuNTI0OSA1LjgxODExIDExLjIyNjUgNS41NDk1OUMxMC45MjgyIDUuMjcxMTMgMTAuNDU1OCA1LjEzMTkgOS44MDkzNiA1LjEzMTlIOC4xMDg3NEw3LjQ5NzExIDguNTkyODFaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="io.camunda:http-json:1" retries="3" />
+        <zeebe:ioMapping>
+          <zeebe:input source="noAuth" target="authentication.type" />
+          <zeebe:input source="PUT" target="method" />
+          <zeebe:input source="=updateMaritalStatusURL" target="url" />
+          <zeebe:input source="=false" target="storeResponse" />
+          <zeebe:input source="=false" target="followRedirects" />
+          <zeebe:input source="=20" target="connectionTimeoutInSeconds" />
+          <zeebe:input source="=20" target="readTimeoutInSeconds" />
+          <zeebe:input source="=false" target="ignoreNullValues" />
+        </zeebe:ioMapping>
+        <zeebe:taskHeaders>
+          <zeebe:header key="elementTemplateVersion" value="13" />
+          <zeebe:header key="elementTemplateId" value="io.camunda.connectors.HttpJson.v2" />
+          <zeebe:header key="resultExpression" value="={&#10;  myResponseBody: response.body&#10;  // Use FEEL to extract values, e.g.,:&#10;  // myUserId: response.body.post.userId&#10;}" />
+          <zeebe:header key="retryBackoff" value="PT0S" />
+        </zeebe:taskHeaders>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_16oht8z</bpmn:incoming>
+      <bpmn:outgoing>Flow_1bfcasy</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_ConvertToContactId" name="Convert contactObjId To contactId" zeebe:modelerTemplate="io.camunda.connectors.HttpJson.v2" zeebe:modelerTemplateVersion="13" zeebe:modelerTemplateIcon="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHZpZXdCb3g9IjAgMCAxOCAxOCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE3LjAzMzUgOC45OTk5N0MxNy4wMzM1IDEzLjQ0NzUgMTMuNDI4MSAxNy4wNTI5IDguOTgwNjUgMTcuMDUyOUM0LjUzMzE2IDE3LjA1MjkgMC45Mjc3NjUgMTMuNDQ3NSAwLjkyNzc2NSA4Ljk5OTk3QzAuOTI3NzY1IDQuNTUyNDggNC41MzMxNiAwLjk0NzA4MyA4Ljk4MDY1IDAuOTQ3MDgzQzEzLjQyODEgMC45NDcwODMgMTcuMDMzNSA0LjU1MjQ4IDE3LjAzMzUgOC45OTk5N1oiIGZpbGw9IiM1MDU1NjIiLz4KPHBhdGggZD0iTTQuOTMxMjYgMTQuMTU3MUw2Ljc4MTA2IDMuNzE0NzFIMTAuMTM3NUMxMS4xOTE3IDMuNzE0NzEgMTEuOTgyNCAzLjk4MzIzIDEyLjUwOTUgNC41MjAyN0MxMy4wNDY1IDUuMDQ3MzYgMTMuMzE1IDUuNzMzNTggMTMuMzE1IDYuNTc4OTJDMTMuMzE1IDcuNDQ0MTQgMTMuMDcxNCA4LjE1NTIyIDEyLjU4NDEgOC43MTIxNUMxMi4xMDY3IDkuMjU5MTMgMTEuNDU1MyA5LjYzNzA1IDEwLjYyOTggOS44NDU5TDEyLjA2MTkgMTQuMTU3MUgxMC4zMzE1TDkuMDMzNjQgMTAuMDI0OUg3LjI0MzUxTDYuNTEyNTQgMTQuMTU3MUg0LjkzMTI2Wk03LjQ5NzExIDguNTkyODFIOS4yNDI0OEM5Ljk5ODMyIDguNTkyODEgMTAuNTkwMSA4LjQyMzc0IDExLjAxNzcgOC4wODU2MUMxMS40NTUzIDcuNzM3NTMgMTEuNjc0MSA3LjI2NTEzIDExLjY3NDEgNi42Njg0MkMxMS42NzQxIDYuMTkxMDYgMTEuNTI0OSA1LjgxODExIDExLjIyNjUgNS41NDk1OUMxMC45MjgyIDUuMjcxMTMgMTAuNDU1OCA1LjEzMTkgOS44MDkzNiA1LjEzMTlIOC4xMDg3NEw3LjQ5NzExIDguNTkyODFaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="io.camunda:http-json:1" retries="3" />
+        <zeebe:ioMapping>
+          <zeebe:input source="noAuth" target="authentication.type" />
+          <zeebe:input source="GET" target="method" />
+          <zeebe:input source="=contactIdURL" target="url" />
+          <zeebe:input source="=false" target="storeResponse" />
+          <zeebe:input source="=false" target="followRedirects" />
+          <zeebe:input source="=20" target="connectionTimeoutInSeconds" />
+          <zeebe:input source="=20" target="readTimeoutInSeconds" />
+        </zeebe:ioMapping>
+        <zeebe:taskHeaders>
+          <zeebe:header key="elementTemplateVersion" value="13" />
+          <zeebe:header key="elementTemplateId" value="io.camunda.connectors.HttpJson.v2" />
+          <zeebe:header key="resultExpression" value="={&#10;  myResponseBody: response.body&#10;  // Use FEEL to extract values, e.g.,:&#10;  // myUserId: response.body.post.userId&#10;}" />
+          <zeebe:header key="retryBackoff" value="PT0S" />
+        </zeebe:taskHeaders>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1h0cqij</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ja2s0n</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:scriptTask id="Activity_ValidateRequiredMaritalStatus" name="Validate Required Marital Status">
+      <bpmn:extensionElements>
+        <zeebe:script expression="=true" resultVariable="coownerMatches" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1d9jjw0</bpmn:incoming>
+      <bpmn:outgoing>Flow_11rt13i</bpmn:outgoing>
+    </bpmn:scriptTask>
+    <bpmn:scriptTask id="Activity_ValidateExistingMaritalStatus" name="Validate Existing Marital Status">
+      <bpmn:extensionElements>
+        <zeebe:script expression="=true" resultVariable="matchingRelationshipFound" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1thhi4e</bpmn:incoming>
+      <bpmn:outgoing>Flow_0kt78f6</bpmn:outgoing>
+    </bpmn:scriptTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="b2c_chq_namechange_validate_person_relationship">
+      <bpmndi:BPMNShape id="Gateway_1ercao9_di" bpmnElement="Gateway_1ercao9" isMarkerVisible="true">
+        <dc:Bounds x="525" y="125" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="506" y="96" width="87" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="162" y="132" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1602et8_di" bpmnElement="Activity_ValidateNameChangeReason">
+        <dc:Bounds x="310" y="110" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0sgezvh_di" bpmnElement="Event_0sgezvh">
+        <dc:Bounds x="532" y="242" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="513" y="285" width="74" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_054rvnc_di" bpmnElement="Gateway_054rvnc" isMarkerVisible="true">
+        <dc:Bounds x="895" y="125" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="892" y="95" width="56" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1e0h4uu_di" bpmnElement="Activity_GetRelatedContacts">
+        <dc:Bounds x="690" y="110" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1gevjsp_di" bpmnElement="Event_1gevjsp">
+        <dc:Bounds x="902" y="242" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="885" y="285" width="70" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1602y1y_di" bpmnElement="Activity_FilterRelatedContacts">
+        <dc:Bounds x="1040" y="110" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_022zw16_di" bpmnElement="Gateway_022zw16" isMarkerVisible="true">
+        <dc:Bounds x="1255" y="125" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1250" y="96" width="59" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_16d1an7_di" bpmnElement="Event_16d1an7">
+        <dc:Bounds x="1262" y="242" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1235" y="285" width="90" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1rwg9cc_di" bpmnElement="Gateway_1rwg9cc" isMarkerVisible="true">
+        <dc:Bounds x="1615" y="125" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1610" y="96" width="59" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_09tca4r_di" bpmnElement="Event_09tca4r">
+        <dc:Bounds x="1622" y="242" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1607" y="285" width="67" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1qagise_di" bpmnElement="Activity_GetMaritalStatusOfTheCustomer">
+        <dc:Bounds x="1960" y="110" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1cfrnhw_di" bpmnElement="Gateway_1cfrnhw" isMarkerVisible="true">
+        <dc:Bounds x="2365" y="125" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2361" y="80" width="57" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_07a6g6b_di" bpmnElement="Gateway_07a6g6b" isMarkerVisible="true">
+        <dc:Bounds x="2705" y="125" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_169qq2n_di" bpmnElement="Event_169qq2n">
+        <dc:Bounds x="2862" y="132" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2845" y="175" width="70" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0hjxxlw_di" bpmnElement="Activity_0glmmam">
+        <dc:Bounds x="2510" y="110" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_04nr41z_di" bpmnElement="Activity_ConvertToContactId">
+        <dc:Bounds x="1760" y="110" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1k1p7e2_di" bpmnElement="Activity_ValidateRequiredMaritalStatus">
+        <dc:Bounds x="1410" y="110" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1cnn6ks_di" bpmnElement="Activity_ValidateExistingMaritalStatus">
+        <dc:Bounds x="2160" y="110" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0u0fmxv_di" bpmnElement="Flow_0u0fmxv">
+        <di:waypoint x="410" y="150" />
+        <di:waypoint x="525" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0oxcxmt_di" bpmnElement="Flow_0oxcxmt">
+        <di:waypoint x="575" y="150" />
+        <di:waypoint x="690" y="150" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="624" y="132" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1j8lpdj_di" bpmnElement="Flow_1j8lpdj">
+        <di:waypoint x="550" y="175" />
+        <di:waypoint x="550" y="242" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="558" y="205.5" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ui8lyf_di" bpmnElement="Flow_0ui8lyf">
+        <di:waypoint x="198" y="150" />
+        <di:waypoint x="310" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_02xj62g_di" bpmnElement="Flow_02xj62g">
+        <di:waypoint x="790" y="150" />
+        <di:waypoint x="895" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0vfhfs8_di" bpmnElement="Flow_0vfhfs8">
+        <di:waypoint x="945" y="150" />
+        <di:waypoint x="1040" y="150" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="984" y="132" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0yx2jl9_di" bpmnElement="Flow_0yx2jl9">
+        <di:waypoint x="920" y="175" />
+        <di:waypoint x="920" y="242" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="928" y="205.5" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1etdve5_di" bpmnElement="Flow_1etdve5">
+        <di:waypoint x="1140" y="150" />
+        <di:waypoint x="1255" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_164relt_di" bpmnElement="Flow_164relt">
+        <di:waypoint x="1280" y="175" />
+        <di:waypoint x="1280" y="242" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1288" y="205.5" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1d9jjw0_di" bpmnElement="Flow_1d9jjw0">
+        <di:waypoint x="1305" y="150" />
+        <di:waypoint x="1410" y="150" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1349" y="132" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_11rt13i_di" bpmnElement="Flow_11rt13i">
+        <di:waypoint x="1510" y="150" />
+        <di:waypoint x="1615" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0vik6le_di" bpmnElement="Flow_0vik6le">
+        <di:waypoint x="1640" y="175" />
+        <di:waypoint x="1640" y="242" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1648" y="205.5" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1h0cqij_di" bpmnElement="Flow_1h0cqij">
+        <di:waypoint x="1665" y="150" />
+        <di:waypoint x="1760" y="150" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1672" y="72" width="85" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ja2s0n_di" bpmnElement="Flow_0ja2s0n">
+        <di:waypoint x="1860" y="150" />
+        <di:waypoint x="1960" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1thhi4e_di" bpmnElement="Flow_1thhi4e">
+        <di:waypoint x="2060" y="150" />
+        <di:waypoint x="2160" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0kt78f6_di" bpmnElement="Flow_0kt78f6">
+        <di:waypoint x="2260" y="150" />
+        <di:waypoint x="2365" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_16oht8z_di" bpmnElement="Flow_16oht8z">
+        <di:waypoint x="2415" y="150" />
+        <di:waypoint x="2510" y="150" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2454" y="132" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ywzxxu_di" bpmnElement="Flow_0ywzxxu">
+        <di:waypoint x="2390" y="175" />
+        <di:waypoint x="2390" y="240" />
+        <di:waypoint x="2730" y="240" />
+        <di:waypoint x="2730" y="175" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2553" y="222" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1bfcasy_di" bpmnElement="Flow_1bfcasy">
+        <di:waypoint x="2610" y="150" />
+        <di:waypoint x="2705" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1c26d9g_di" bpmnElement="Flow_1c26d9g">
+        <di:waypoint x="2755" y="150" />
+        <di:waypoint x="2862" y="150" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_02lyzlz" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.52.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.9.0">
+  <bpmn:process id="Process_0f5965n" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_0vlix98</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="Activity_ReadCustomerData" name="Read Customer Data" zeebe:modelerTemplate="io.camunda.connectors.HttpJson.v2" zeebe:modelerTemplateVersion="13" zeebe:modelerTemplateIcon="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHZpZXdCb3g9IjAgMCAxOCAxOCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE3LjAzMzUgOC45OTk5N0MxNy4wMzM1IDEzLjQ0NzUgMTMuNDI4MSAxNy4wNTI5IDguOTgwNjUgMTcuMDUyOUM0LjUzMzE2IDE3LjA1MjkgMC45Mjc3NjUgMTMuNDQ3NSAwLjkyNzc2NSA4Ljk5OTk3QzAuOTI3NzY1IDQuNTUyNDggNC41MzMxNiAwLjk0NzA4MyA4Ljk4MDY1IDAuOTQ3MDgzQzEzLjQyODEgMC45NDcwODMgMTcuMDMzNSA0LjU1MjQ4IDE3LjAzMzUgOC45OTk5N1oiIGZpbGw9IiM1MDU1NjIiLz4KPHBhdGggZD0iTTQuOTMxMjYgMTQuMTU3MUw2Ljc4MTA2IDMuNzE0NzFIMTAuMTM3NUMxMS4xOTE3IDMuNzE0NzEgMTEuOTgyNCAzLjk4MzIzIDEyLjUwOTUgNC41MjAyN0MxMy4wNDY1IDUuMDQ3MzYgMTMuMzE1IDUuNzMzNTggMTMuMzE1IDYuNTc4OTJDMTMuMzE1IDcuNDQ0MTQgMTMuMDcxNCA4LjE1NTIyIDEyLjU4NDEgOC43MTIxNUMxMi4xMDY3IDkuMjU5MTMgMTEuNDU1MyA5LjYzNzA1IDEwLjYyOTggOS44NDU5TDEyLjA2MTkgMTQuMTU3MUgxMC4zMzE1TDkuMDMzNjQgMTAuMDI0OUg3LjI0MzUxTDYuNTEyNTQgMTQuMTU3MUg0LjkzMTI2Wk03LjQ5NzExIDguNTkyODFIOS4yNDI0OEM5Ljk5ODMyIDguNTkyODEgMTAuNTkwMSA4LjQyMzc0IDExLjAxNzcgOC4wODU2MUMxMS40NTUzIDcuNzM3NTMgMTEuNjc0MSA3LjI2NTEzIDExLjY3NDEgNi42Njg0MkMxMS42NzQxIDYuMTkxMDYgMTEuNTI0OSA1LjgxODExIDExLjIyNjUgNS41NDk1OUMxMC45MjgyIDUuMjcxMTMgMTAuNDU1OCA1LjEzMTkgOS44MDkzNiA1LjEzMTlIOC4xMDg3NEw3LjQ5NzExIDguNTkyODFaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="io.camunda:http-json:1" retries="3" />
+        <zeebe:ioMapping>
+          <zeebe:input source="bearer" target="authentication.type" />
+          <zeebe:input source="=calvinSessionId" target="authentication.token" />
+          <zeebe:input source="GET" target="method" />
+          <zeebe:input source="=contactInfoURL" target="url" />
+          <zeebe:input source="={&#10;  &#34;feid&#34;: feid,&#10;  &#34;language&#34;: &#34;DE&#34;,&#10;  &#34;traceId&#34;: traceId,&#10;  &#34;x-source-service&#34;: &#34;Camunda Namechange&#34;&#10;}" target="headers" />
+          <zeebe:input source="={&#10;  &#34;crmCustomerNumber&#34;: contact.contactId&#10;}" target="queryParameters" />
+          <zeebe:input source="=false" target="storeResponse" />
+          <zeebe:input source="=false" target="followRedirects" />
+          <zeebe:input source="=20" target="connectionTimeoutInSeconds" />
+          <zeebe:input source="=20" target="readTimeoutInSeconds" />
+        </zeebe:ioMapping>
+        <zeebe:taskHeaders>
+          <zeebe:header key="elementTemplateVersion" value="13" />
+          <zeebe:header key="elementTemplateId" value="io.camunda.connectors.HttpJson.v2" />
+          <zeebe:header key="resultExpression" value="={&#10;  customerInfo: response.body&#10;}" />
+          <zeebe:header key="retryBackoff" value="PT0S" />
+        </zeebe:taskHeaders>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1sqv8cv</bpmn:incoming>
+      <bpmn:outgoing>Flow_1txawzo</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0vlix98" sourceRef="StartEvent_1" targetRef="Activity_CalvinSessionLogin" />
+    <bpmn:sequenceFlow id="Flow_1txawzo" sourceRef="Activity_ReadCustomerData" targetRef="Activity_ProcessToCRM" />
+    <bpmn:parallelGateway id="Gateway_022kke0">
+      <bpmn:incoming>Flow_04lo58e</bpmn:incoming>
+      <bpmn:outgoing>Flow_16tc0i9</bpmn:outgoing>
+      <bpmn:outgoing>Flow_07cjv83</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0bkcc8x</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1dkie86</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0tvl5tm</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_04lo58e" sourceRef="Activity_ProcessToCRM" targetRef="Gateway_022kke0" />
+    <bpmn:sequenceFlow id="Flow_16tc0i9" sourceRef="Gateway_022kke0" targetRef="Activity_ValidatePersonRelationship" />
+    <bpmn:sequenceFlow id="Flow_07cjv83" sourceRef="Gateway_022kke0" targetRef="Activity_ValidateExemptionOrder" />
+    <bpmn:sequenceFlow id="Flow_0bkcc8x" sourceRef="Gateway_022kke0" targetRef="Activity_ValidateNationality" />
+    <bpmn:sequenceFlow id="Flow_1dkie86" sourceRef="Gateway_022kke0" targetRef="Activity_HandleAccounts" />
+    <bpmn:sequenceFlow id="Flow_0tvl5tm" sourceRef="Gateway_022kke0" targetRef="Activity_UnblockCustomer" />
+    <bpmn:callActivity id="Activity_ValidateExemptionOrder" name="3 Validate Exemption Order">
+      <bpmn:extensionElements>
+        <zeebe:calledElement processId="b2c_chq_namechange_validate_exemption_order" propagateAllChildVariables="false" propagateAllParentVariables="false" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_07cjv83</bpmn:incoming>
+      <bpmn:outgoing>Flow_1oj5b2b</bpmn:outgoing>
+    </bpmn:callActivity>
+    <bpmn:callActivity id="Activity_ValidatePersonRelationship" name="4 Validate Person Relationship">
+      <bpmn:extensionElements>
+        <zeebe:calledElement processId="b2c_chq_namechange_validate_person_relationship" propagateAllChildVariables="false" propagateAllParentVariables="false" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_16tc0i9</bpmn:incoming>
+      <bpmn:outgoing>Flow_0sfi2mf</bpmn:outgoing>
+    </bpmn:callActivity>
+    <bpmn:callActivity id="Activity_HandleAccounts" name="5 Handle Accounts">
+      <bpmn:extensionElements>
+        <zeebe:calledElement processId="b2c_chq_namechange_handle_accounts" propagateAllChildVariables="false" propagateAllParentVariables="false" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1dkie86</bpmn:incoming>
+      <bpmn:outgoing>Flow_1crutum</bpmn:outgoing>
+    </bpmn:callActivity>
+    <bpmn:callActivity id="Activity_UnblockCustomer" name="6 Unblock Customer">
+      <bpmn:extensionElements>
+        <zeebe:calledElement processId="b2c_chq_namechange_unblock_customer" propagateAllChildVariables="false" propagateAllParentVariables="false" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0tvl5tm</bpmn:incoming>
+      <bpmn:outgoing>Flow_1lt5mnp</bpmn:outgoing>
+    </bpmn:callActivity>
+    <bpmn:callActivity id="Activity_ValidateNationality" name="8 Validate Nationality">
+      <bpmn:extensionElements>
+        <zeebe:calledElement processId="b2c_chq_namechange_validate_nationality" propagateAllChildVariables="false" propagateAllParentVariables="false" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0bkcc8x</bpmn:incoming>
+      <bpmn:outgoing>Flow_1rlibto</bpmn:outgoing>
+    </bpmn:callActivity>
+    <bpmn:parallelGateway id="Gateway_1xfn4oq">
+      <bpmn:incoming>Flow_1rlibto</bpmn:incoming>
+      <bpmn:incoming>Flow_1oj5b2b</bpmn:incoming>
+      <bpmn:incoming>Flow_0sfi2mf</bpmn:incoming>
+      <bpmn:incoming>Flow_1crutum</bpmn:incoming>
+      <bpmn:incoming>Flow_1lt5mnp</bpmn:incoming>
+      <bpmn:outgoing>Flow_0g0a0fj</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_1rlibto" sourceRef="Activity_ValidateNationality" targetRef="Gateway_1xfn4oq" />
+    <bpmn:sequenceFlow id="Flow_1oj5b2b" sourceRef="Activity_ValidateExemptionOrder" targetRef="Gateway_1xfn4oq" />
+    <bpmn:sequenceFlow id="Flow_0sfi2mf" sourceRef="Activity_ValidatePersonRelationship" targetRef="Gateway_1xfn4oq" />
+    <bpmn:sequenceFlow id="Flow_1crutum" sourceRef="Activity_HandleAccounts" targetRef="Gateway_1xfn4oq" />
+    <bpmn:sequenceFlow id="Flow_1lt5mnp" sourceRef="Activity_UnblockCustomer" targetRef="Gateway_1xfn4oq" />
+    <bpmn:endEvent id="Event_1rwyk8b" name="Name change completed">
+      <bpmn:incoming>Flow_0cpwc8d</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0g0a0fj" sourceRef="Gateway_1xfn4oq" targetRef="Activity_CalvinSessionLogout" />
+    <bpmn:sequenceFlow id="Flow_1sqv8cv" sourceRef="Activity_CalvinSessionLogin" targetRef="Activity_ReadCustomerData" />
+    <bpmn:serviceTask id="Activity_CalvinSessionLogin" name="Calvin Session Login">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="getCalvinSessionId" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0vlix98</bpmn:incoming>
+      <bpmn:outgoing>Flow_1sqv8cv</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_ProcessToCRM" name="Process to CRM" zeebe:modelerTemplate="io.camunda.connectors.HttpJson.v2" zeebe:modelerTemplateVersion="13" zeebe:modelerTemplateIcon="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHZpZXdCb3g9IjAgMCAxOCAxOCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE3LjAzMzUgOC45OTk5N0MxNy4wMzM1IDEzLjQ0NzUgMTMuNDI4MSAxNy4wNTI5IDguOTgwNjUgMTcuMDUyOUM0LjUzMzE2IDE3LjA1MjkgMC45Mjc3NjUgMTMuNDQ3NSAwLjkyNzc2NSA4Ljk5OTk3QzAuOTI3NzY1IDQuNTUyNDggNC41MzMxNiAwLjk0NzA4MyA4Ljk4MDY1IDAuOTQ3MDgzQzEzLjQyODEgMC45NDcwODMgMTcuMDMzNSA0LjU1MjQ4IDE3LjAzMzUgOC45OTk5N1oiIGZpbGw9IiM1MDU1NjIiLz4KPHBhdGggZD0iTTQuOTMxMjYgMTQuMTU3MUw2Ljc4MTA2IDMuNzE0NzFIMTAuMTM3NUMxMS4xOTE3IDMuNzE0NzEgMTEuOTgyNCAzLjk4MzIzIDEyLjUwOTUgNC41MjAyN0MxMy4wNDY1IDUuMDQ3MzYgMTMuMzE1IDUuNzMzNTggMTMuMzE1IDYuNTc4OTJDMTMuMzE1IDcuNDQ0MTQgMTMuMDcxNCA4LjE1NTIyIDEyLjU4NDEgOC43MTIxNUMxMi4xMDY3IDkuMjU5MTMgMTEuNDU1MyA5LjYzNzA1IDEwLjYyOTggOS44NDU5TDEyLjA2MTkgMTQuMTU3MUgxMC4zMzE1TDkuMDMzNjQgMTAuMDI0OUg3LjI0MzUxTDYuNTEyNTQgMTQuMTU3MUg0LjkzMTI2Wk03LjQ5NzExIDguNTkyODFIOS4yNDI0OEM5Ljk5ODMyIDguNTkyODEgMTAuNTkwMSA4LjQyMzc0IDExLjAxNzcgOC4wODU2MUMxMS40NTUzIDcuNzM3NTMgMTEuNjc0MSA3LjI2NTEzIDExLjY3NDEgNi42Njg0MkMxMS42NzQxIDYuMTkxMDYgMTEuNTI0OSA1LjgxODExIDExLjIyNjUgNS41NDk1OUMxMC45MjgyIDUuMjcxMTMgMTAuNDU1OCA1LjEzMTkgOS44MDkzNiA1LjEzMTlIOC4xMDg3NEw3LjQ5NzExIDguNTkyODFaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="io.camunda:http-json:1" retries="3" />
+        <zeebe:ioMapping>
+          <zeebe:input source="noAuth" target="authentication.type" />
+          <zeebe:input source="PUT" target="method" />
+          <zeebe:input source="=processToCRMURL" target="url" />
+          <zeebe:input source="=false" target="storeResponse" />
+          <zeebe:input source="=false" target="followRedirects" />
+          <zeebe:input source="=20" target="connectionTimeoutInSeconds" />
+          <zeebe:input source="=20" target="readTimeoutInSeconds" />
+          <zeebe:input source="=false" target="ignoreNullValues" />
+        </zeebe:ioMapping>
+        <zeebe:taskHeaders>
+          <zeebe:header key="elementTemplateVersion" value="13" />
+          <zeebe:header key="elementTemplateId" value="io.camunda.connectors.HttpJson.v2" />
+          <zeebe:header key="resultExpression" value="={&#10;  myResponseBody: response.body&#10;  // Use FEEL to extract values, e.g.,:&#10;  // myUserId: response.body.post.userId&#10;}" />
+          <zeebe:header key="retryBackoff" value="PT0S" />
+        </zeebe:taskHeaders>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1txawzo</bpmn:incoming>
+      <bpmn:outgoing>Flow_04lo58e</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0cpwc8d" sourceRef="Activity_CalvinSessionLogout" targetRef="Event_1rwyk8b" />
+    <bpmn:serviceTask id="Activity_CalvinSessionLogout" name="Calvin Session Logout">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="calvinSessionLogOut" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0g0a0fj</bpmn:incoming>
+      <bpmn:outgoing>Flow_0cpwc8d</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_0f5965n">
+      <bpmndi:BPMNShape id="Activity_080s3rm_di" bpmnElement="Activity_ReadCustomerData">
+        <dc:Bounds x="470" y="380" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_022kke0_di" bpmnElement="Gateway_022kke0">
+        <dc:Bounds x="895" y="395" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_14t2623_di" bpmnElement="Activity_ValidateExemptionOrder">
+        <dc:Bounds x="1050" y="230" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_054p8pl_di" bpmnElement="Activity_ValidatePersonRelationship">
+        <dc:Bounds x="1050" y="380" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0ueun96_di" bpmnElement="Activity_HandleAccounts">
+        <dc:Bounds x="1050" y="530" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0nj4w43_di" bpmnElement="Activity_UnblockCustomer">
+        <dc:Bounds x="1050" y="680" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1eqsn4f_di" bpmnElement="Activity_ValidateNationality">
+        <dc:Bounds x="1050" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1xfn4oq_di" bpmnElement="Gateway_1xfn4oq">
+        <dc:Bounds x="1255" y="395" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="152" y="402" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_17wi6ur_di" bpmnElement="Activity_CalvinSessionLogin">
+        <dc:Bounds x="270" y="380" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_19fqx2x_di" bpmnElement="Activity_ProcessToCRM">
+        <dc:Bounds x="680" y="380" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1rwyk8b_di" bpmnElement="Event_1rwyk8b">
+        <dc:Bounds x="1622" y="402" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1606" y="445" width="69" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1i07gdj_di" bpmnElement="Activity_CalvinSessionLogout">
+        <dc:Bounds x="1410" y="380" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1sqv8cv_di" bpmnElement="Flow_1sqv8cv">
+        <di:waypoint x="370" y="420" />
+        <di:waypoint x="470" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1txawzo_di" bpmnElement="Flow_1txawzo">
+        <di:waypoint x="570" y="420" />
+        <di:waypoint x="680" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04lo58e_di" bpmnElement="Flow_04lo58e">
+        <di:waypoint x="780" y="420" />
+        <di:waypoint x="895" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_16tc0i9_di" bpmnElement="Flow_16tc0i9">
+        <di:waypoint x="945" y="420" />
+        <di:waypoint x="1050" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_07cjv83_di" bpmnElement="Flow_07cjv83">
+        <di:waypoint x="920" y="395" />
+        <di:waypoint x="920" y="270" />
+        <di:waypoint x="1050" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0bkcc8x_di" bpmnElement="Flow_0bkcc8x">
+        <di:waypoint x="920" y="395" />
+        <di:waypoint x="920" y="120" />
+        <di:waypoint x="1050" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1dkie86_di" bpmnElement="Flow_1dkie86">
+        <di:waypoint x="920" y="445" />
+        <di:waypoint x="920" y="570" />
+        <di:waypoint x="1050" y="570" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0tvl5tm_di" bpmnElement="Flow_0tvl5tm">
+        <di:waypoint x="920" y="445" />
+        <di:waypoint x="920" y="720" />
+        <di:waypoint x="1050" y="720" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1oj5b2b_di" bpmnElement="Flow_1oj5b2b">
+        <di:waypoint x="1150" y="270" />
+        <di:waypoint x="1280" y="270" />
+        <di:waypoint x="1280" y="395" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0sfi2mf_di" bpmnElement="Flow_0sfi2mf">
+        <di:waypoint x="1150" y="420" />
+        <di:waypoint x="1255" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1crutum_di" bpmnElement="Flow_1crutum">
+        <di:waypoint x="1150" y="570" />
+        <di:waypoint x="1280" y="570" />
+        <di:waypoint x="1280" y="445" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1lt5mnp_di" bpmnElement="Flow_1lt5mnp">
+        <di:waypoint x="1150" y="720" />
+        <di:waypoint x="1280" y="720" />
+        <di:waypoint x="1280" y="445" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1rlibto_di" bpmnElement="Flow_1rlibto">
+        <di:waypoint x="1150" y="120" />
+        <di:waypoint x="1280" y="120" />
+        <di:waypoint x="1280" y="395" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0g0a0fj_di" bpmnElement="Flow_0g0a0fj">
+        <di:waypoint x="1305" y="420" />
+        <di:waypoint x="1410" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0vlix98_di" bpmnElement="Flow_0vlix98">
+        <di:waypoint x="188" y="420" />
+        <di:waypoint x="270" y="420" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0cpwc8d_di" bpmnElement="Flow_0cpwc8d">
+        <di:waypoint x="1510" y="420" />
+        <di:waypoint x="1622" y="420" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
