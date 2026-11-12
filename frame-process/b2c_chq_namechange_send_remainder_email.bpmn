@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_0372okd" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.52.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.10.0">
+  <bpmn:process id="b2c_chq_namechange_send_remainder_email" name="Send Remainder Email" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_0iug1qm</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="Activity_CalvinSessionLogin" name="Calvin Session Login">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="getCalvinSessionId" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1uso0ot</bpmn:incoming>
+      <bpmn:outgoing>Flow_07et4ni</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_CalvinSessionLogout" name="Calvin Session Logout">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="calvinSessionLogOut" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1libf8f</bpmn:incoming>
+      <bpmn:outgoing>Flow_1v6bfha</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="Event_1mk06jp">
+      <bpmn:incoming>Flow_1v6bfha</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:serviceTask id="Activity_PrepareVariables" name="Prepare Variables">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="prepareSendRemainderEmailVariables" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0iug1qm</bpmn:incoming>
+      <bpmn:outgoing>Flow_1uso0ot</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0iug1qm" sourceRef="StartEvent_1" targetRef="Activity_PrepareVariables" />
+    <bpmn:sequenceFlow id="Flow_07et4ni" sourceRef="Activity_CalvinSessionLogin" targetRef="Activity_SendRemainderEmail" />
+    <bpmn:sequenceFlow id="Flow_1uso0ot" sourceRef="Activity_PrepareVariables" targetRef="Activity_CalvinSessionLogin" />
+    <bpmn:sequenceFlow id="Flow_1v6bfha" sourceRef="Activity_CalvinSessionLogout" targetRef="Event_1mk06jp" />
+    <bpmn:serviceTask id="Activity_SendRemainderEmail" name="Send Remainder Email" zeebe:modelerTemplate="io.camunda.connectors.HttpJson.v2" zeebe:modelerTemplateVersion="13" zeebe:modelerTemplateIcon="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgiIGhlaWdodD0iMTgiIHZpZXdCb3g9IjAgMCAxOCAxOCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTE3LjAzMzUgOC45OTk5N0MxNy4wMzM1IDEzLjQ0NzUgMTMuNDI4MSAxNy4wNTI5IDguOTgwNjUgMTcuMDUyOUM0LjUzMzE2IDE3LjA1MjkgMC45Mjc3NjUgMTMuNDQ3NSAwLjkyNzc2NSA4Ljk5OTk3QzAuOTI3NzY1IDQuNTUyNDggNC41MzMxNiAwLjk0NzA4MyA4Ljk4MDY1IDAuOTQ3MDgzQzEzLjQyODEgMC45NDcwODMgMTcuMDMzNSA0LjU1MjQ4IDE3LjAzMzUgOC45OTk5N1oiIGZpbGw9IiM1MDU1NjIiLz4KPHBhdGggZD0iTTQuOTMxMjYgMTQuMTU3MUw2Ljc4MTA2IDMuNzE0NzFIMTAuMTM3NUMxMS4xOTE3IDMuNzE0NzEgMTEuOTgyNCAzLjk4MzIzIDEyLjUwOTUgNC41MjAyN0MxMy4wNDY1IDUuMDQ3MzYgMTMuMzE1IDUuNzMzNTggMTMuMzE1IDYuNTc4OTJDMTMuMzE1IDcuNDQ0MTQgMTMuMDcxNCA4LjE1NTIyIDEyLjU4NDEgOC43MTIxNUMxMi4xMDY3IDkuMjU5MTMgMTEuNDU1MyA5LjYzNzA1IDEwLjYyOTggOS44NDU5TDEyLjA2MTkgMTQuMTU3MUgxMC4zMzE1TDkuMDMzNjQgMTAuMDI0OUg3LjI0MzUxTDYuNTEyNTQgMTQuMTU3MUg0LjkzMTI2Wk03LjQ5NzExIDguNTkyODFIOS4yNDI0OEM5Ljk5ODMyIDguNTkyODEgMTAuNTkwMSA4LjQyMzc0IDExLjAxNzcgOC4wODU2MUMxMS40NTUzIDcuNzM3NTMgMTEuNjc0MSA3LjI2NTEzIDExLjY3NDEgNi42Njg0MkMxMS42NzQxIDYuMTkxMDYgMTEuNTI0OSA1LjgxODExIDExLjIyNjUgNS41NDk1OUMxMC45MjgyIDUuMjcxMTMgMTAuNDU1OCA1LjEzMTkgOS44MDkzNiA1LjEzMTlIOC4xMDg3NEw3LjQ5NzExIDguNTkyODFaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="io.camunda:http-json:1" retries="4" />
+        <zeebe:ioMapping>
+          <zeebe:input source="bearer" target="authentication.type" />
+          <zeebe:input source="=calvinSessionId" target="authentication.token" />
+          <zeebe:input source="POST" target="method" />
+          <zeebe:input source="=technicalEmailURL" target="url" />
+          <zeebe:input source="={&#10;  &#34;feId&#34;: feid,&#10;  &#34;language&#34;: &#34;DE&#34;,&#10;  &#34;traceId&#34;: traceId,&#10;  &#34;x-source-service&#34;: &#34;Camunda Namechange&#34;&#10;}" target="headers" />
+          <zeebe:input source="=false" target="storeResponse" />
+          <zeebe:input source="=false" target="followRedirects" />
+          <zeebe:input source="=20" target="connectionTimeoutInSeconds" />
+          <zeebe:input source="=20" target="readTimeoutInSeconds" />
+          <zeebe:input source="// TO DO: Add payload" target="body" />
+          <zeebe:input source="=false" target="ignoreNullValues" />
+        </zeebe:ioMapping>
+        <zeebe:taskHeaders>
+          <zeebe:header key="elementTemplateVersion" value="13" />
+          <zeebe:header key="elementTemplateId" value="io.camunda.connectors.HttpJson.v2" />
+          <zeebe:header key="resultVariable" value="remainderEmailResponse" />
+          <zeebe:header key="errorExpression" value="=if error.code != null then&#10;  if (matches(error.code, &#34;^4[0-9]{2}$&#34;) or job.retries &#60;= 1) then&#10;    bpmnError(&#10;      &#34;SEND_REMAINDER_EMAIL_REST_API_ERROR&#34;,&#10;      &#34;Error thrown while calling the Send Technical Email REST API&#34;,&#10;      {&#10;        fullErrorObject: error,&#10;        errorCode: error.code,&#10;        errorResponse: error.variables.response.body&#10;      })&#10;  else &#10;    jobError(&#10;      error.message,&#10;      {},&#10;      job.retries - 1,&#10;      duration(&#34;PT5S&#34;)&#10;    )&#10;else&#10;  null" />
+          <zeebe:header key="retryBackoff" value="PT5S" />
+        </zeebe:taskHeaders>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_07et4ni</bpmn:incoming>
+      <bpmn:outgoing>Flow_1libf8f</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1libf8f" sourceRef="Activity_SendRemainderEmail" targetRef="Activity_CalvinSessionLogout" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="b2c_chq_namechange_send_remainder_email">
+      <bpmndi:BPMNShape id="BPMNShape_0vv3vg3" bpmnElement="StartEvent_1">
+        <dc:Bounds x="172" y="92" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0lqz8n5_di" bpmnElement="Activity_CalvinSessionLogin">
+        <dc:Bounds x="500" y="70" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0nn6ipf" bpmnElement="Activity_CalvinSessionLogout">
+        <dc:Bounds x="890" y="70" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1mk06jp_di" bpmnElement="Event_1mk06jp">
+        <dc:Bounds x="1082" y="92" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1sekq6d_di" bpmnElement="Activity_PrepareVariables">
+        <dc:Bounds x="300" y="70" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0mo3c49_di" bpmnElement="Activity_SendRemainderEmail">
+        <dc:Bounds x="690" y="70" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0iug1qm_di" bpmnElement="Flow_0iug1qm">
+        <di:waypoint x="208" y="110" />
+        <di:waypoint x="300" y="110" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_07et4ni_di" bpmnElement="Flow_07et4ni">
+        <di:waypoint x="600" y="110" />
+        <di:waypoint x="690" y="110" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1uso0ot_di" bpmnElement="Flow_1uso0ot">
+        <di:waypoint x="400" y="110" />
+        <di:waypoint x="500" y="110" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1v6bfha_di" bpmnElement="Flow_1v6bfha">
+        <di:waypoint x="990" y="110" />
+        <di:waypoint x="1082" y="110" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1libf8f_di" bpmnElement="Flow_1libf8f">
+        <di:waypoint x="790" y="110" />
+        <di:waypoint x="890" y="110" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

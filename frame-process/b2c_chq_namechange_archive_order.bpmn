@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_10le37d" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.52.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.10.0">
+  <bpmn:process id="b2c_chq_namechange_archive_order" name="Archive Namechange Order" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_14utm4i</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sendTask id="Activity_SendNameChangeOrderToECM" name="Send Name Change Order to ECM">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="archiveNameChangeOrder" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_14utm4i</bpmn:incoming>
+      <bpmn:incoming>Flow_1tf0hpt</bpmn:incoming>
+      <bpmn:outgoing>Flow_0qsng66</bpmn:outgoing>
+    </bpmn:sendTask>
+    <bpmn:sequenceFlow id="Flow_14utm4i" sourceRef="StartEvent_1" targetRef="Activity_SendNameChangeOrderToECM" />
+    <bpmn:intermediateThrowEvent id="Event_09h6ir7">
+      <bpmn:incoming>Flow_0qsng66</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ufqr6e</bpmn:outgoing>
+      <bpmn:signalEventDefinition id="SignalEventDefinition_0rsvvmu" signalRef="Signal_24mqu91" />
+    </bpmn:intermediateThrowEvent>
+    <bpmn:sequenceFlow id="Flow_0qsng66" sourceRef="Activity_SendNameChangeOrderToECM" targetRef="Event_09h6ir7" />
+    <bpmn:endEvent id="Event_01bu69t">
+      <bpmn:incoming>Flow_0ufqr6e</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0ufqr6e" sourceRef="Event_09h6ir7" targetRef="Event_01bu69t" />
+    <bpmn:boundaryEvent id="Event_0ifadwc" attachedToRef="Activity_SendNameChangeOrderToECM">
+      <bpmn:extensionElements>
+        <zeebe:ioMapping>
+          <zeebe:output source="=jmsBrokerErrorMessage" target="jmsBrokerErrorMessage" />
+        </zeebe:ioMapping>
+      </bpmn:extensionElements>
+      <bpmn:outgoing>Flow_1rn3ls6</bpmn:outgoing>
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_03uie5w" errorRef="Error_0419fvz" />
+    </bpmn:boundaryEvent>
+    <bpmn:intermediateCatchEvent id="Event_0zx5cff">
+      <bpmn:incoming>Flow_1rn3ls6</bpmn:incoming>
+      <bpmn:outgoing>Flow_1tf0hpt</bpmn:outgoing>
+      <bpmn:signalEventDefinition id="SignalEventDefinition_08jlrbe" signalRef="Signal_24mqu91" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:sequenceFlow id="Flow_1rn3ls6" sourceRef="Event_0ifadwc" targetRef="Event_0zx5cff" />
+    <bpmn:sequenceFlow id="Flow_1tf0hpt" sourceRef="Event_0zx5cff" targetRef="Activity_SendNameChangeOrderToECM" />
+  </bpmn:process>
+  <bpmn:signal id="Signal_24mqu91" name="RETRY_SIGNAL" />
+  <bpmn:error id="Error_0419fvz" name="ERROR_SENDING_MESSAGE" errorCode="ERROR_SENDING_MESSAGE" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="b2c_chq_namechange_archive_order">
+      <bpmndi:BPMNShape id="Activity_104ji8c_di" bpmnElement="Activity_SendNameChangeOrderToECM">
+        <dc:Bounds x="280" y="180" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="152" y="202" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_09h6ir7_di" bpmnElement="Event_09h6ir7">
+        <dc:Bounds x="472" y="202" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_01bu69t_di" bpmnElement="Event_01bu69t">
+        <dc:Bounds x="602" y="202" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0zx5cff_di" bpmnElement="Event_0zx5cff">
+        <dc:Bounds x="312" y="82" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0ifadwc_di" bpmnElement="Event_0ifadwc">
+        <dc:Bounds x="362" y="162" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_14utm4i_di" bpmnElement="Flow_14utm4i">
+        <di:waypoint x="188" y="220" />
+        <di:waypoint x="280" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1tf0hpt_di" bpmnElement="Flow_1tf0hpt">
+        <di:waypoint x="330" y="118" />
+        <di:waypoint x="330" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0qsng66_di" bpmnElement="Flow_0qsng66">
+        <di:waypoint x="380" y="220" />
+        <di:waypoint x="472" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ufqr6e_di" bpmnElement="Flow_0ufqr6e">
+        <di:waypoint x="508" y="220" />
+        <di:waypoint x="602" y="220" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1rn3ls6_di" bpmnElement="Flow_1rn3ls6">
+        <di:waypoint x="380" y="162" />
+        <di:waypoint x="380" y="100" />
+        <di:waypoint x="348" y="100" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
